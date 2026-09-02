@@ -23,6 +23,8 @@
     --hue: 23;
     --saturation: 100;
     --lightness: 55;
+    --teal: #1a6b73;
+    --teal-light: #2f9aa3;
   }
   @media (prefers-color-scheme: dark){
     :root{
@@ -44,27 +46,168 @@
     justify-content: center;
     min-height: 100vh;
     overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Inter', 'Helvetica Neue', sans-serif;
   }
 
-  /* ── LOADER ── */
+  /* ══════════════ LOGIN SCREEN ══════════════ */
+  #login-screen{
+    position: fixed;
+    inset: 0;
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0d3b40 0%, #1a6b73 45%, #2f9aa3 100%);
+    transition: opacity .5s ease, visibility .5s ease;
+  }
+  #login-screen.hide{
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .blob{
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: .55;
+  }
+  .blob1{ width: 380px; height: 380px; background: #52c7cf; top: -120px; left: -100px; }
+  .blob2{ width: 320px; height: 320px; background: #0a2e33; bottom: -140px; right: -80px; }
+  .blob3{ width: 260px; height: 260px; background: #ffffff; top: 55%; left: 65%; opacity: .18; }
+
+  .glass-card{
+    position: relative;
+    z-index: 1;
+    width: 340px;
+    max-width: 88vw;
+    padding: 40px 32px 32px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+    text-align: center;
+    animation: cardIn .6s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes cardIn{
+    from{ opacity: 0; transform: translateY(24px) scale(.96); }
+    to{ opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .glass-card.shake{
+    animation: shake .45s ease;
+  }
+  @keyframes shake{
+    10%, 90% { transform: translateX(-2px); }
+    20%, 80% { transform: translateX(4px); }
+    30%, 50%, 70% { transform: translateX(-8px); }
+    40%, 60% { transform: translateX(8px); }
+  }
+
+  .lock-icon{
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.22);
+    border: 1px solid rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lock-icon svg{ width: 26px; height: 26px; }
+
+  .glass-card h1{
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+    letter-spacing: .2px;
+  }
+  .glass-card p.sub{
+    color: rgba(255,255,255,0.7);
+    font-size: .8rem;
+    margin: 0 0 24px;
+  }
+
+  .field{
+    position: relative;
+    margin-bottom: 14px;
+    text-align: left;
+  }
+  .field input{
+    width: 100%;
+    padding: 13px 16px;
+    padding-right: 42px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: .92rem;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .field input::placeholder{ color: rgba(255,255,255,0.55); }
+  .field input:focus{
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.65);
+  }
+  .toggle-eye{
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: .7;
+    width: 18px;
+    height: 18px;
+  }
+  .toggle-eye:hover{ opacity: 1; }
+
+  .signin-btn{
+    width: 100%;
+    padding: 13px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.92);
+    color: var(--teal);
+    font-size: .95rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: .2px;
+  }
+  .signin-btn:active{ transform: scale(.98); }
+
+  .error-msg{
+    color: #ffd7d7;
+    font-size: .78rem;
+    margin-top: 12px;
+    min-height: 16px;
+    opacity: 0;
+    transition: opacity .2s ease;
+  }
+  .error-msg.show{ opacity: 1; }
+
+  /* ══════════════ CUBE LOADER ══════════════ */
   #loader{
     position: fixed;
     inset: 0;
     z-index: 10000;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     background: var(--bg);
     transition: opacity .5s ease, visibility .5s ease;
   }
+  #loader.visible{ display: flex; }
   #loader.hide{
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
   }
-  .scene{
-    perspective: calc(var(--perspective) * 1px);
-  }
+  .scene{ perspective: calc(var(--perspective) * 1px); }
   .word{
     display: flex;
     transform: translate(calc(var(--size) * 0.7px), 0) rotateX(-30deg) rotateY(45deg);
@@ -80,7 +223,6 @@
   }
   .letter{
     color: var(--color);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 2rem;
     font-weight: bold;
     height: calc(var(--size) * 1px);
@@ -102,45 +244,23 @@
     top: 50%;
     width: calc(var(--size) * 1px);
   }
-  .letter__panel:nth-of-type(1){
-    transform: translate3d(-50%, -50%, 0) translate3d(0, 0, calc(var(--size) * 0.5px));
-  }
-  .letter__panel:nth-of-type(2){
-    transform: translate3d(-50%, -50%, 0) rotateX(90deg) translate3d(0, 0, calc(var(--size) * 0.5px));
-  }
-  .letter__panel:nth-of-type(3){
-    transform: translate3d(-50%, -50%, 0) rotateX(180deg) translate3d(0, 0, calc(var(--size) * 0.5px));
-  }
-  .letter__panel:nth-of-type(4){
-    transform: translate3d(-50%, -50%, 0) rotateX(-90deg) translate3d(0, 0, calc(var(--size) * 0.5px));
-  }
-  .letter__panel:nth-of-type(5){
-    transform: translate3d(-50%, -50%, 0) rotateY(-90deg) translate3d(0, 0, calc(var(--size) * 0.5px));
-  }
+  .letter__panel:nth-of-type(1){ transform: translate3d(-50%, -50%, 0) translate3d(0, 0, calc(var(--size) * 0.5px)); }
+  .letter__panel:nth-of-type(2){ transform: translate3d(-50%, -50%, 0) rotateX(90deg) translate3d(0, 0, calc(var(--size) * 0.5px)); }
+  .letter__panel:nth-of-type(3){ transform: translate3d(-50%, -50%, 0) rotateX(180deg) translate3d(0, 0, calc(var(--size) * 0.5px)); }
+  .letter__panel:nth-of-type(4){ transform: translate3d(-50%, -50%, 0) rotateX(-90deg) translate3d(0, 0, calc(var(--size) * 0.5px)); }
+  .letter__panel:nth-of-type(5){ transform: translate3d(-50%, -50%, 0) rotateY(-90deg) translate3d(0, 0, calc(var(--size) * 0.5px)); }
   @keyframes rotate{
-    0%, 30.625%{
-      transform: rotateX(0deg);
-    }
-    33.125%, 81.625%{
-      transform: rotateX(90deg);
-    }
-    83.125%, 100%{
-      transform: rotateX(180deg);
-    }
+    0%, 30.625%{ transform: rotateX(0deg); }
+    33.125%, 81.625%{ transform: rotateX(90deg); }
+    83.125%, 100%{ transform: rotateX(180deg); }
   }
   @keyframes jump{
-    0%, 50%, 100%{
-      transform: scaleX(1) scaleY(1) translate(0, 0);
-    }
-    15%{
-      transform: scaleX(1.2) scaleY(0.8) translate(0, 0);
-    }
-    25%{
-      transform: scaleX(0.9) scaleY(1.1) translate(0, -100%);
-    }
+    0%, 50%, 100%{ transform: scaleX(1) scaleY(1) translate(0, 0); }
+    15%{ transform: scaleX(1.2) scaleY(0.8) translate(0, 0); }
+    25%{ transform: scaleX(0.9) scaleY(1.1) translate(0, -100%); }
   }
 
-  /* ── APP IFRAME ── */
+  /* ══════════════ APP IFRAME ══════════════ */
   #app-frame{
     position: fixed;
     inset: 0;
@@ -150,65 +270,67 @@
     opacity: 0;
     transition: opacity .5s ease;
   }
-  #app-frame.show{
-    opacity: 1;
-  }
+  #app-frame.show{ opacity: 1; }
 </style>
 </head>
 <body>
 
+  <!-- LOGIN -->
+  <div id="login-screen">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+
+    <form class="glass-card" id="login-form" autocomplete="off">
+      <div class="lock-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="16" height="10" rx="2"></rect>
+          <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+        </svg>
+      </div>
+      <h1>CC Billing Statement</h1>
+      <p class="sub">Sign in to view your cards</p>
+
+      <div class="field">
+        <input type="text" id="username" placeholder="Username" autocomplete="off">
+      </div>
+      <div class="field">
+        <input type="password" id="password" placeholder="Password" autocomplete="off">
+        <svg class="toggle-eye" id="eye" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </div>
+
+      <button type="submit" class="signin-btn">Sign In</button>
+      <div class="error-msg" id="error-msg">Incorrect username or password.</div>
+    </form>
+  </div>
+
+  <!-- LOADER -->
   <div id="loader">
     <div class="scene">
       <div class="word">
-        <div class="letter__wrap" style="--index:0">
-          <div class="letter">
-            <span class="letter__panel">C</span>
-            <span class="letter__panel">C</span>
-            <span class="letter__panel">C</span>
-            <span class="letter__panel">C</span>
-            <span class="letter__panel">C</span>
-          </div>
-        </div>
-        <div class="letter__wrap" style="--index:1">
-          <div class="letter">
-            <span class="letter__panel">A</span>
-            <span class="letter__panel">A</span>
-            <span class="letter__panel">A</span>
-            <span class="letter__panel">A</span>
-            <span class="letter__panel">A</span>
-          </div>
-        </div>
-        <div class="letter__wrap" style="--index:2">
-          <div class="letter">
-            <span class="letter__panel">R</span>
-            <span class="letter__panel">R</span>
-            <span class="letter__panel">R</span>
-            <span class="letter__panel">R</span>
-            <span class="letter__panel">R</span>
-          </div>
-        </div>
-        <div class="letter__wrap" style="--index:3">
-          <div class="letter">
-            <span class="letter__panel">D</span>
-            <span class="letter__panel">D</span>
-            <span class="letter__panel">D</span>
-            <span class="letter__panel">D</span>
-            <span class="letter__panel">D</span>
-          </div>
-        </div>
-        <div class="letter__wrap" style="--index:4">
-          <div class="letter">
-            <span class="letter__panel">S</span>
-            <span class="letter__panel">S</span>
-            <span class="letter__panel">S</span>
-            <span class="letter__panel">S</span>
-            <span class="letter__panel">S</span>
-          </div>
-        </div>
+        <div class="letter__wrap" style="--index:0"><div class="letter">
+          <span class="letter__panel">C</span><span class="letter__panel">C</span><span class="letter__panel">C</span><span class="letter__panel">C</span><span class="letter__panel">C</span>
+        </div></div>
+        <div class="letter__wrap" style="--index:1"><div class="letter">
+          <span class="letter__panel">A</span><span class="letter__panel">A</span><span class="letter__panel">A</span><span class="letter__panel">A</span><span class="letter__panel">A</span>
+        </div></div>
+        <div class="letter__wrap" style="--index:2"><div class="letter">
+          <span class="letter__panel">R</span><span class="letter__panel">R</span><span class="letter__panel">R</span><span class="letter__panel">R</span><span class="letter__panel">R</span>
+        </div></div>
+        <div class="letter__wrap" style="--index:3"><div class="letter">
+          <span class="letter__panel">D</span><span class="letter__panel">D</span><span class="letter__panel">D</span><span class="letter__panel">D</span><span class="letter__panel">D</span>
+        </div></div>
+        <div class="letter__wrap" style="--index:4"><div class="letter">
+          <span class="letter__panel">S</span><span class="letter__panel">S</span><span class="letter__panel">S</span><span class="letter__panel">S</span><span class="letter__panel">S</span>
+        </div></div>
       </div>
     </div>
   </div>
 
+  <!-- APP -->
   <iframe
     id="app-frame"
     src="https://script.google.com/macros/s/AKfycbwlVZ4QjwNSm0wVq2txkpb2MZwJvyJ11UJlIDBblxE1K9XmSx5SzYKHHMkGGnD2pGhkbw/exec"
@@ -217,21 +339,76 @@
   ></iframe>
 
   <script>
-    var frame  = document.getElementById('app-frame');
-    var loader = document.getElementById('loader');
-    var revealed = false;
+    var VALID_USER = 'alvinmartinsalazar17';
+    var VALID_PASS = 'usc12345';
+
+    var loginScreen = document.getElementById('login-screen');
+    var loader      = document.getElementById('loader');
+    var frame       = document.getElementById('app-frame');
+    var form        = document.getElementById('login-form');
+    var errorMsg    = document.getElementById('error-msg');
+    var card        = document.querySelector('.glass-card');
+    var eye         = document.getElementById('eye');
+    var passInput   = document.getElementById('password');
+
+    var frameLoaded = false;
+    var loggedIn    = false;
+
+    frame.addEventListener('load', function () {
+      frameLoaded = true;
+      if (loggedIn) reveal();
+    });
 
     function reveal() {
-      if (revealed) return;
-      revealed = true;
       frame.classList.add('show');
       loader.classList.add('hide');
+      setTimeout(function () { loader.classList.remove('visible'); }, 500);
     }
 
-    frame.addEventListener('load', reveal);
-    // Fallback in case the load event doesn't fire as expected
-    // (e.g. cross-origin quirks with Apps Script redirects).
-    setTimeout(reveal, 4000);
+    function proceedPastLogin() {
+      loggedIn = true;
+      loginScreen.classList.add('hide');
+      if (frameLoaded) {
+        reveal();
+      } else {
+        loader.classList.add('visible');
+      }
+    }
+
+    // Skip login if already authenticated this browser session
+    if (sessionStorage.getItem('cc_auth') === '1') {
+      loginScreen.style.display = 'none';
+      proceedPastLogin();
+    }
+
+    eye.addEventListener('click', function () {
+      passInput.type = passInput.type === 'password' ? 'text' : 'password';
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var u = document.getElementById('username').value.trim();
+      var p = passInput.value;
+
+      if (u === VALID_USER && p === VALID_PASS) {
+        sessionStorage.setItem('cc_auth', '1');
+        errorMsg.classList.remove('show');
+        proceedPastLogin();
+      } else {
+        errorMsg.classList.add('show');
+        card.classList.remove('shake');
+        void card.offsetWidth; // restart animation
+        card.classList.add('shake');
+        passInput.value = '';
+        passInput.focus();
+      }
+    });
+
+    // Fallback in case the iframe load event doesn't fire as expected
+    setTimeout(function () {
+      frameLoaded = true;
+      if (loggedIn) reveal();
+    }, 4000);
   </script>
 
 </body>
