@@ -202,6 +202,14 @@
   @supports not ((-webkit-backdrop-filter:blur(2px)) or (backdrop-filter:blur(2px))){
     .glass-card{ background-color:#11151C; }
   }
+
+  /* ── BORDERLESS (v2.1): no borders or outlines; fills and spacing only ── */
+  *,*::before,*::after{ border:0 !important; }
+  .glass-card::before{ display:none !important; }
+  .lock-icon{ background:rgba(255,255,255,0.09); }
+  .field input{ background:rgba(255,255,255,0.09); }
+  .field input:focus{ background:rgba(255,255,255,0.13); }
+  .letter__panel{ background:#2b5566; box-shadow:inset 0 0 18px rgba(165,203,255,0.28); backface-visibility:hidden; }
 </style>
 <script>
   /* film-grain tile, generated once (no image file needed) */
